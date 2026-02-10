@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -7,9 +6,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 const OFFICIAL_EMAIL = "shreya1212.be23@chitkara.edu.in"; 
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+
+const genAI = new GoogleGenerativeAI("AIzaSyCLrA-mMkGKMyE3CQkKC2T7qNzvIY9EFNQ");
+
 
 const isPrime = (num) => {
     if (num <= 1) return false;
@@ -22,6 +24,7 @@ const isPrime = (num) => {
 const getGCD = (a, b) => b === 0 ? a : getGCD(b, a % b);
 const getLCM = (a, b) => (a * b) / getGCD(a, b);
 
+// --- ROUTES ---
 app.get('/', (req, res) => {
     res.send("BFHL API is running");
 });
@@ -63,6 +66,7 @@ app.post('/bfhl', async (req, res) => {
         } 
         else if (body.AI) {
             try {
+                
                 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
                 const prompt = `Answer in exactly one word: ${body.AI}`;
                 const result = await model.generateContent(prompt);
@@ -72,7 +76,7 @@ app.post('/bfhl', async (req, res) => {
                 return res.status(500).json({
                      "is_success": false,
                      "official_email": OFFICIAL_EMAIL,
-                     "message": "AI Service Failed"
+                     "message": "AI Service Failed: " + aiError.message
                 });
             }
         } 
