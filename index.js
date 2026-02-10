@@ -17,6 +17,10 @@ const isPrime = (n) => {
 
 const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
 const lcm = (a, b) => (a * b) / gcd(a, b);
+// ROOT route (for Render check)
+app.get("/", (req, res) => {
+  res.send("BFHL API is running");
+});
 
 // GET /health
 app.get("/health", (req, res) => {
